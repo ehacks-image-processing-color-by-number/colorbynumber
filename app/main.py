@@ -1,10 +1,7 @@
 import base64
-from django.http import JsonResponse
 from flask import Flask, render_template
 import random
 import requests
-from PIL import Image
-import io
 
 
 
@@ -12,6 +9,14 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def hello_world():
     return render_template('index.html')
+
+@app.route("/upload")
+def uploadImage():
+    return render_template('upload.html')
+
+@app.route("/randomizedImage")
+def randomizedImage():
+    return render_template('randomizedImage.html')
 
 @app.post("/image")
 def image():
