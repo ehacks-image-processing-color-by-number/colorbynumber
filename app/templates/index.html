@@ -29,11 +29,33 @@
 
            // send some data to 127.0.0.1:5500 using a POST request
              document.getElementById('uploadForm').addEventListener('submit', function(e) {
+
                 e.preventDefault();
+                var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+    var reader = new FileReader();
+
+    reader.onloadend = function() {
+        // The result attribute contains the Data URL, which is a Base64 encoded string of the file
+        var base64String = reader.result;
+
+        // Create a JSON object
+        var jsonObject = {
+            image: base64String
+        };
+
+        // Convert the JSON object to a string
+        var jsonString = JSON.stringify(jsonObject);
+                // json encode 
                 var form = e.target;
                 var formData = new FormData(form);
                 var xhr = new XMLHttpRequest();
+                // content type set to json and send image to ['image']
+
+
                 xhr.open('POST', '/image', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         console.log('success', xhr.responseText);
@@ -48,7 +70,9 @@
 
                     }
                 };
-                xhr.send(formData);
+                xhr.send(jsonString);
+              };
+              reader.readAsDataURL(file);
             });
      
         </script>
