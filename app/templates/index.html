@@ -37,6 +37,15 @@
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         console.log('success', xhr.responseText);
+                        // returns base64 string replace with imgPreview and make it display the image
+                        // decode the base64 string and display the image
+                        var img = new Image();
+                        img.src = 'data:image/png;base64,' + xhr.responseText;
+                        img.width = 200;
+                        document.getElementById('imgPreview').innerHTML = '';
+                        document.getElementById('imgPreview').appendChild(img);
+                        
+
                     }
                 };
                 xhr.send(formData);

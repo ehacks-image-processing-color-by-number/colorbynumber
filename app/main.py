@@ -1,3 +1,4 @@
+import base64
 from django.http import JsonResponse
 from flask import Flask, render_template
 import random
@@ -16,11 +17,7 @@ def hello_world():
 def image():
     txt = '/1920x1080'
     response = requests.get("https://source.unsplash.com/random{0}".format(txt))
-    file = open('image.jpg', 'wb')
-    file.write(response.content)
-    file.close()
-    img = Image.open('image.jpg')
-    img.show()
+    return base64.b64encode(response.content)
 
 
 if __name__ == "__main__":
