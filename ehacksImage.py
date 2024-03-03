@@ -41,7 +41,7 @@ else:
     print(f"File '{file_path}' does not exist.")
 
 def take_ss():
-    screenshot = ImageGrab.grab()#.crop((x0-50, y0-50, x1+150, y1+150))
+    screenshot = ImageGrab.grab().crop((x0-50, y0-50, x1+150, y1+150))
     screenshot.save("eHacksRandImage.png")
 
 def rand():
