@@ -5,7 +5,14 @@ import random
 import requests
 import cv2
 import numpy as np
-
+import tkinter as tk
+from PIL import Image, ImageGrab
+import turtle
+from turtle import *
+from pathlib import Path
+import os
+import time
+# Create a new Flask application
 
 app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
@@ -15,25 +22,69 @@ def hello_world():
 @app.route("/upload")
 def uploadImage():
     return render_template('upload.html')
-
 @app.route("/randomizedImage")
 def randomizedImage():
     return render_template('randomizedImage.html')
-
+@app.route("/posterize")
+def posterizee():
+    return render_template('posterize.html')
 
 @app.post("/image")
 def image():
     post_data = request.json
     data_url = post_data['image']
+    border_thickness = post_data['border_thickness']
     prefix, base64_data = data_url.split(',')
+    border_thickness = int(border_thickness)
 
     image_data = base64.b64decode(base64_data)
     
     with open('./image.png', 'wb') as f:
         f.write(image_data)
-    return trace_image('./image.png', 'out.png', line_thickness=5)
+    return trace_image('./image.png', 'out.png', border_thickness)
 
-def trace_image(input_path, output_path, line_thickness=2):
+@app.post("/posterize")
+def posterize():
+    post_data = request.json
+    data_url = post_data['image']
+    prefix, base64_data = data_url.split(',')
+    image_data = base64.b64decode(base64_data)
+    # with open('./imagepo.png', 'wb') as f:
+    #     f.write(image_data)
+    return po(Image.open(data_url), 10)
+
+def po(image, num_colors):
+    """
+    Posterize the given image to the specified number of colors.
+    """
+    
+    # image = Image.open(image)
+    # Convert the image to RGB mode
+    image.convert('RGB')
+
+    # Apply posterize effect
+    image.quantize(colors=num_colors)
+
+    # return image
+
+# Open an image file
+    input_image = Image.open('image.png')
+    # Specify the number of colors for posterizing
+    num_colors = 10
+
+    # Apply posterizing algorithm
+    output_image = po(Image.open(input_image), num_colors)
+
+    # Save the output image
+    output_image.save('posterized_image.png')
+
+
+    with open(output_image, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read())
+    return encoded_string
+
+
+def trace_image(input_path, output_path, line_thickness):
     # Load the image using OpenCV
     image = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
 
@@ -70,4 +121,21 @@ def trace_image(input_path, output_path, line_thickness=2):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

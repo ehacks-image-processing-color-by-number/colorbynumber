@@ -35,9 +35,6 @@
     <h1 class="load" style="display:none">Loading . . .</h1>
 <form>
     <br />
-    <label for="border_thickness" class="form-label visually-hidden">Border Thickness</label>
-    <input type="number" id="border_thickness" name="border_thickness" min="0" max="100" step="1" value="1" class="form-control" style="font-size:15px;" placeholder="Border Thickness" aria-label="Border Thickness" aria-describedby="button-addon2">
-    <br/>
     <br/>
   <fieldset class="upload_dropZone text-center mb-3 p-4 dropbox">
 
@@ -189,13 +186,9 @@
 // Create a JSON object
 var jsonObject = {
     image: base64String,
-    border_thickness: document.getElementById('border_thickness').value
 };
 
-// add an event listener for border thickness
-document.getElementById('border_thickness').addEventListener('input', function() {
-    jsonObject.border_thickness = document.getElementById('border_thickness').value;
-});
+
 
 // add an event listener for image upload
 
@@ -205,7 +198,7 @@ var form = document.querySelector('form');
                 var formData = new FormData(form);
                 var xhr = new XMLHttpRequest();
                 // content type set to json and send image to ['image']
-                xhr.open('POST', '/image', true);
+                xhr.open('POST', '/posterize', true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
 
                 xhr.onload = function() {
